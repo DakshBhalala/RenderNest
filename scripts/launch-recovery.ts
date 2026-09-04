@@ -56,7 +56,7 @@ export async function runRecoverySuite(): Promise<{
     const testDir = path.resolve(process.cwd(), '.test-storage-chaos');
     const storage = new LocalStorageProvider({
       baseDir: testDir,
-      appUrl: 'https://api.rendernest.com',
+      appUrl: 'https://api-rendernest.duckdns.org',
       secretKey: 'chaos-secret-key-32-chars-long!!',
     });
 
@@ -80,7 +80,7 @@ export async function runRecoverySuite(): Promise<{
     const start = Date.now();
     const storage = new LocalStorageProvider({
       baseDir: path.resolve(process.cwd(), '.test-storage-chaos'),
-      appUrl: 'https://api.rendernest.com',
+      appUrl: 'https://api-rendernest.duckdns.org',
       secretKey: 'chaos-secret-key-32-chars-long!!',
     });
 

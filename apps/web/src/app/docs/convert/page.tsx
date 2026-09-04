@@ -27,7 +27,7 @@ export default function ConvertDocs() {
 
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/convert/pdf \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/convert/pdf \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -51,7 +51,7 @@ export default function ConvertDocs() {
 
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/convert/docx \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/convert/docx \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -66,7 +66,7 @@ export default function ConvertDocs() {
   "success": true,
   "request_id": "req_1725432190_1a2b3c",
   "data": {
-    "file_url": "https://api.rendernest.com/api/storage/converted/ws_demo/req_1725432190_1a2b3c.docx?expires=...",
+    "file_url": "https://api-rendernest.duckdns.org/api/storage/converted/ws_demo/req_1725432190_1a2b3c.docx?expires=...",
     "format": "docx",
     "file_size_bytes": 14208
   }

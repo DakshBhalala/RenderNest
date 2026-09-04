@@ -142,11 +142,11 @@ export default function PlaygroundPage() {
   // Generate code snippet
   const payloadStr = JSON.stringify(getPayload(), null, 2);
   const codeSnippets = {
-    curl: `curl -X POST https://api.rendernest.com/v1/${endpoint} \\
+    curl: `curl -X POST https://api-rendernest.duckdns.org/v1/${endpoint} \\
   -H "Authorization: Bearer ${apiKey}" \\
   -H "Content-Type: application/json" \\
   -d '${payloadStr}'`,
-    js: `const response = await fetch("https://api.rendernest.com/v1/${endpoint}", {
+    js: `const response = await fetch("https://api-rendernest.duckdns.org/v1/${endpoint}", {
   method: "POST",
   headers: {
     "Authorization": "Bearer ${apiKey}",
@@ -160,7 +160,7 @@ console.log(data);`,
     python: `import requests
 
 response = requests.post(
-    "https://api.rendernest.com/v1/${endpoint}",
+    "https://api-rendernest.duckdns.org/v1/${endpoint}",
     headers={
         "Authorization": "Bearer ${apiKey}",
         "Content-Type": "application/json"

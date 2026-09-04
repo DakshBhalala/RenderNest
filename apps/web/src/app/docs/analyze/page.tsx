@@ -27,7 +27,7 @@ export default function AnalyzeDocs() {
 
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/analyze \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/analyze \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -50,7 +50,7 @@ export default function AnalyzeDocs() {
 
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/compare \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/compare \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -71,9 +71,9 @@ export default function AnalyzeDocs() {
     "similarity": 0.9842,
     "changed": true,
     "difference_percentage": 1.58,
-    "difference_image_url": "https://api.rendernest.com/api/storage/compare/ws_demo/req_1725432180_diff.png",
-    "screenshot_a_url": "https://api.rendernest.com/api/storage/compare/ws_demo/req_1725432180_a.png",
-    "screenshot_b_url": "https://api.rendernest.com/api/storage/compare/ws_demo/req_1725432180_b.png"
+    "difference_image_url": "https://api-rendernest.duckdns.org/api/storage/compare/ws_demo/req_1725432180_diff.png",
+    "screenshot_a_url": "https://api-rendernest.duckdns.org/api/storage/compare/ws_demo/req_1725432180_a.png",
+    "screenshot_b_url": "https://api-rendernest.duckdns.org/api/storage/compare/ws_demo/req_1725432180_b.png"
   }
 }`}
         />

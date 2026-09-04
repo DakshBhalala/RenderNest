@@ -10,7 +10,7 @@ export async function GET() {
         'One API for rendering, extracting, converting, and understanding the web. Developer-first infrastructure for screenshots, PDFs, structured extraction, Markdown, page inspection, and analysis.',
       contact: {
         name: 'RenderNest Support',
-        url: 'https://rendernest.com/docs',
+        url: 'https://rendernest.duckdns.org/docs',
       },
     },
     servers: [
@@ -19,7 +19,7 @@ export async function GET() {
         description: 'Local Development Server',
       },
       {
-        url: 'https://api.rendernest.com',
+        url: 'https://api-rendernest.duckdns.org',
         description: 'Production Global Edge',
       },
     ],

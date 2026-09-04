@@ -19,7 +19,7 @@ RenderNest has been systematically prepared, audited, containerized, documented,
 - **RapidAPI Gateway Integration**: 10/10 automated compatibility tests passed (`scripts/verify-rapidapi.ts`), including signature verification, proxy secret validation, workspace auto-linking, shared compute execution, and standard RFC 7807 error responses.
 - **Pre-flight Deployment Gates**: 11/11 automated checks passed (`pnpm deploy:check`).
 - **Warnings / Remaining Manual Actions**:
-  1. Real DNS propagation (`https://api.rendernest.com`) and Oracle Cloud public IP assignment require user execution of Cloudflare & OCI console steps.
+  1. Real DNS propagation (`https://api-rendernest.duckdns.org`) and Oracle Cloud public IP assignment require user execution of Cloudflare & OCI console steps.
   2. Cloudflare R2 bucket credentials and production database secrets must be pasted into `/opt/rendernest/.env.production` on the live server.
   3. Single-node idempotency: Idempotency is currently backed by atomic local file-system locks (`.storage/idempotency`); for multi-instance horizontal scaling in the future, idempotency records should transition to Redis or PostgreSQL.
 

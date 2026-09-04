@@ -48,7 +48,7 @@ export default function GettingStartedDocs() {
           <CodeBlock
             filename="cURL Request"
             language="bash"
-            code={`curl -X POST https://api.rendernest.com/v1/inspect \\
+            code={`curl -X POST https://api-rendernest.duckdns.org/v1/inspect \\
   -H "Authorization: Bearer wf_live_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -59,7 +59,7 @@ export default function GettingStartedDocs() {
           <CodeBlock
             filename="JavaScript (Node / Browser)"
             language="javascript"
-            code={`const response = await fetch("https://api.rendernest.com/v1/inspect", {
+            code={`const response = await fetch("https://api-rendernest.duckdns.org/v1/inspect", {
   method: "POST",
   headers: {
     "Authorization": "Bearer wf_live_your_api_key",
@@ -80,7 +80,7 @@ console.log(data);`}
             code={`import requests
 
 response = requests.post(
-    "https://api.rendernest.com/v1/inspect",
+    "https://api-rendernest.duckdns.org/v1/inspect",
     headers={
         "Authorization": "Bearer wf_live_your_api_key",
         "Content-Type": "application/json"

@@ -27,7 +27,7 @@ export default function HomePage() {
   const [copiedSnippet, setCopiedSnippet] = useState(false);
 
   const snippets = {
-    curl: `curl -X POST https://api.rendernest.com/v1/extract/markdown \\
+    curl: `curl -X POST https://api-rendernest.duckdns.org/v1/extract/markdown \\
   -H "Authorization: Bearer wf_live_xxxxxxxxxxxxxxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -45,7 +45,7 @@ console.log(result.data.markdown);`,
     python: `import requests
 
 response = requests.post(
-    "https://api.rendernest.com/v1/extract/markdown",
+    "https://api-rendernest.duckdns.org/v1/extract/markdown",
     headers={
         "Authorization": "Bearer wf_live_xxxxxxxxxxxxxxxx",
         "Content-Type": "application/json"

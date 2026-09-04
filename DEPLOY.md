@@ -85,7 +85,7 @@ PostgreSQL 16        Redis 7
 ### Step 2: Ubuntu Initial Server Configuration
 Connect to your instance via SSH:
 ```bash
-ssh -i rendernest-key.pem ubuntu@<ORACLE_VM_IP>
+ssh -i rendernest-key.pem ubuntu@130.210.47.93
 ```
 
 Update system packages and install essential utilities:
@@ -206,15 +206,15 @@ In your Cloudflare dashboard:
 1. Navigate to **DNS** → **Records**.
 2. Add an **A record**:
    - **Name**: `api` (or `@` for apex domain)
-   - **IPv4 Address**: `<ORACLE_VM_IP>`
+   - **IPv4 Address**: `130.210.47.93`
    - **Proxy Status**: **Proxied** (Orange Cloud) for DDoS protection, OR **DNS Only** (Grey Cloud) if you prefer direct Caddy TLS management.
    - *Note*: If Proxied, set Cloudflare SSL/TLS mode to **Full (Strict)**.
 
 ### Step 12: Domain & HTTPS Verification
 Set your canonical URLs in `.env.production`:
 ```bash
-APP_URL=https://rendernest.com
-API_URL=https://api.rendernest.com
+APP_URL=https://rendernest.duckdns.org
+API_URL=https://api-rendernest.duckdns.org
 ```
 
 ### Step 13: Database Migration
@@ -251,12 +251,12 @@ curl -i http://localhost/ready
 ### Step 16: Production Smoke Test
 Verify public end-to-end functionality using the smoke test script:
 ```bash
-API_KEY=wf_live_your_key API_URL=https://api.rendernest.com node --import tsx scripts/production-smoke-test.ts
+API_KEY=wf_live_your_key API_URL=https://api-rendernest.duckdns.org node --import tsx scripts/production-smoke-test.ts
 ```
 
 ### Step 17: RapidAPI Provider Setup
 1. Follow [RAPIDAPI-DEPLOY.md](./RAPIDAPI-DEPLOY.md) to register your API in the RapidAPI Provider Portal.
-2. Set Target URL: `https://api.rendernest.com`.
+2. Set Target URL: `https://api-rendernest.duckdns.org`.
 3. Set Proxy Secret in `/opt/rendernest/.env.production` (`RAPIDAPI_PROXY_SECRET`).
 4. Run verification:
    ```bash
@@ -313,7 +313,7 @@ The following actions require your personal account credentials or manual consol
    - In VCN Security List: Allow ingress on TCP `80`, `443`, and restricted `22`.
    - Note the instance public IP address.
 2. **Domain & Cloudflare**:
-   - Point your DNS A record (e.g. `api.rendernest.com`) to the Oracle VM IP.
+   - Point your DNS A record (e.g. `api-rendernest.duckdns.org`) to the Oracle VM IP.
    - Set Cloudflare SSL/TLS encryption mode to **Full (Strict)**.
 3. **Cloudflare R2 Bucket**:
    - Create bucket `rendernest-production-artifacts`.
@@ -327,7 +327,7 @@ The following actions require your personal account credentials or manual consol
    - Run `bash scripts/deploy.sh`.
 6. **RapidAPI Provider Portal**:
    - Create new API listing on [rapidapi.com/provider](https://rapidapi.com/provider).
-   - Set Target URL to `https://api.rendernest.com`.
+   - Set Target URL to `https://api-rendernest.duckdns.org`.
    - Copy Proxy Secret into `/opt/rendernest/.env.production` as `RAPIDAPI_PROXY_SECRET`.
    - Run `node --import tsx scripts/verify-rapidapi.ts`.
    - Publish listing following [RAPIDAPI-LISTING.md](./RAPIDAPI-LISTING.md).

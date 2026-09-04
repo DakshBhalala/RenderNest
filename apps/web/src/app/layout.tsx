@@ -19,11 +19,11 @@ export const metadata: Metadata = {
     'visual regression',
   ],
   authors: [{ name: 'RenderNest' }],
-  metadataBase: new URL(process.env.APP_URL || 'https://rendernest.com'),
+  metadataBase: new URL(process.env.APP_URL || 'https://rendernest.duckdns.org'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://rendernest.com',
+    url: 'https://rendernest.duckdns.org',
     title: 'RenderNest — Turn the web into data, documents, and images',
     description:
       'One unified API for screenshots, PDFs, structured extraction, Markdown, page inspection, and analysis.',

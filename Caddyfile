@@ -4,27 +4,36 @@
 
 {
     # Global options
-    email {$ACME_EMAIL:admin@rendernest.com}
+    email {$ACME_EMAIL:admin@rendernest.duckdns.org}
     admin off
 }
 
 # -------------------------------------------------------------
-# API Domain: api.rendernest.com
+# API Domain: api-rendernest.duckdns.org
 # -------------------------------------------------------------
-{$API_DOMAIN:api.rendernest.com} {
+{$API_DOMAIN:api-rendernest.duckdns.org} {
     # Request body limit (10MB)
     request_body {
         max_size 10MB
     }
 
-    # Security Headers
+    # Security Headers & CORS
     header {
         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
         X-Content-Type-Options "nosniff"
         X-Frame-Options "DENY"
         Referrer-Policy "strict-origin-when-cross-origin"
+        Access-Control-Allow-Origin "*"
+        Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization, X-Request-Id, Idempotency-Key, X-Idempotency-Key, X-RapidAPI-Key, X-RapidAPI-Proxy-Secret"
         -Server
     }
+
+    # Handle OPTIONS preflight requests
+    @options {
+        method OPTIONS
+    }
+    respond @options 204
 
     # Reverse proxy to Next.js API server
     reverse_proxy web:3000 {
@@ -47,9 +56,9 @@
 }
 
 # -------------------------------------------------------------
-# Web Domain: rendernest.com
+# Web Domain: rendernest.duckdns.org
 # -------------------------------------------------------------
-{$APP_DOMAIN:rendernest.com} {
+{$APP_DOMAIN:rendernest.duckdns.org} {
     # Request body limit
     request_body {
         max_size 10MB

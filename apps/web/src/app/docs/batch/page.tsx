@@ -25,7 +25,7 @@ export default function BatchDocs() {
 
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/batch \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/batch \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -67,7 +67,7 @@ export default function BatchDocs() {
 
         <CodeBlock
           language="bash"
-          code={`curl -X GET https://api.rendernest.com/v1/jobs/clz19x0abc001 \\
+          code={`curl -X GET https://api-rendernest.duckdns.org/v1/jobs/clz19x0abc001 \\
   -H "Authorization: Bearer wf_live_xxxx"`}
         />
 

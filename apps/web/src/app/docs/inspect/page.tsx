@@ -23,7 +23,7 @@ export default function InspectDocs() {
         <h2 className="text-base font-bold text-white">Code Example</h2>
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/inspect \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/inspect \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{

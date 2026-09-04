@@ -89,7 +89,7 @@ export async function runAttackSuite(): Promise<{
   const secretKey = 'attack-test-secret-key-32-chars!';
   const storage = new LocalStorageProvider({
     baseDir: testDir,
-    appUrl: 'https://api.rendernest.com',
+    appUrl: 'https://api-rendernest.duckdns.org',
     secretKey,
   });
 

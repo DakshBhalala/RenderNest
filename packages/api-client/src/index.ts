@@ -35,7 +35,7 @@ export class RenderNest {
 
   constructor(options: RenderNestClientOptions) {
     this.apiKey = options.apiKey;
-    this.baseUrl = (options.baseUrl || 'https://api.rendernest.com').replace(/\/+$/, '');
+    this.baseUrl = (options.baseUrl || 'https://api-rendernest.duckdns.org').replace(/\/+$/, '');
     this.timeoutMs = options.timeoutMs || 45000;
   }
 

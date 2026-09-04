@@ -23,7 +23,7 @@ export default function ExtractTextDocs() {
         <h2 className="text-base font-bold text-white">Code Example</h2>
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/extract/text \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/extract/text \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{

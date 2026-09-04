@@ -1,14 +1,14 @@
 /**
  * RenderNest Production Smoke Test
  * 
- * Verifies live production API endpoints against https://api.rendernest.com
+ * Verifies live production API endpoints against https://api-rendernest.duckdns.org
  * (or API_URL if overridden).
  * 
  * Usage:
- *   API_KEY=wf_live_xxx API_URL=https://api.rendernest.com node --import tsx scripts/production-smoke-test.ts
+ *   API_KEY=wf_live_xxx API_URL=https://api-rendernest.duckdns.org node --import tsx scripts/production-smoke-test.ts
  */
 
-const BASE_URL = (process.env.API_URL || 'https://api.rendernest.com').replace(/\/$/, '');
+const BASE_URL = (process.env.API_URL || 'https://api-rendernest.duckdns.org').replace(/\/$/, '');
 const API_KEY = process.env.API_KEY || process.env.RENDERNEST_API_KEY || '';
 
 interface SmokeStep {

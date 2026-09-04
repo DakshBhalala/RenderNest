@@ -83,7 +83,7 @@ export default function ScreenshotDocs() {
         <h2 className="text-base font-bold text-white">Code Example</h2>
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/render/screenshot \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/render/screenshot \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -106,7 +106,7 @@ export default function ScreenshotDocs() {
   "data": {
     "url": "https://example.com",
     "format": "png",
-    "file_url": "https://api.rendernest.com/api/storage/screenshots/ws_demo/req_1725432120_8a7c2b.png?expires=1726036920&signature=...",
+    "file_url": "https://api-rendernest.duckdns.org/api/storage/screenshots/ws_demo/req_1725432120_8a7c2b.png?expires=1726036920&signature=...",
     "width": 1440,
     "height": 900,
     "file_size_bytes": 148291

@@ -29,7 +29,7 @@ const ARCHETYPES: Record<string, { title: string; html: string }> = {
       <article>
         <h1>Authentication & Authorization</h1>
         <p>All HTTP requests to the RenderNest API must contain an <code>Authorization</code> header formatted as a Bearer token.</p>
-        <pre><code class="language-bash">curl -X POST https://api.rendernest.com/v1/process \\
+        <pre><code class="language-bash">curl -X POST https://api-rendernest.duckdns.org/v1/process \\
   -H "Authorization: Bearer wf_live_secret_key" \\
   -d '{"input":{"url":"https://example.com"}}'</code></pre>
         <h2>Status Codes</h2>

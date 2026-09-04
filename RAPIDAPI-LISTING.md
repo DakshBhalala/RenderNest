@@ -10,8 +10,8 @@ This document contains copy, curl examples, JSON responses, pricing structures, 
 - **Tagline**: High-performance headless browser rendering, screenshot capture, PDF generation, and structured data extraction in a single API call.
 - **Category**: `Developer Tools` (Primary), `Data Scraping` (Secondary)
 - **Tags**: `screenshot`, `pdf-generation`, `web-scraping`, `headless-chrome`, `playwright`, `content-extraction`, `markdown-extractor`, `web-automation`
-- **Terms of Service URL**: `https://rendernest.com/terms`
-- **Privacy Policy URL**: `https://rendernest.com/privacy`
+- **Terms of Service URL**: `https://rendernest.duckdns.org/terms`
+- **Privacy Policy URL**: `https://rendernest.duckdns.org/privacy`
 
 ---
 
@@ -128,7 +128,7 @@ curl -X POST "https://rendernest.p.rapidapi.com/v1/render/screenshot" \
   "success": true,
   "request_id": "req_1725432002000_c3d4e5f6",
   "data": {
-    "screenshot_url": "https://pub-r2.rendernest.com/artifacts/screenshot_c3d4e5f6.webp?sig=hmac...",
+    "screenshot_url": "https://api-rendernest.duckdns.org/api/storage/artifacts/screenshot_c3d4e5f6.webp?sig=hmac...",
     "format": "webp",
     "width": 1280,
     "height": 720,
@@ -195,7 +195,7 @@ Prepare the following image dimensions for RapidAPI Marketplace:
 
 ## 5. RapidAPI Publishing Checklist
 
-- [ ] Base URL target set to verified production domain (`https://api.rendernest.com`).
+- [ ] Base URL target set to verified production domain (`https://api-rendernest.duckdns.org`).
 - [ ] Proxy secret configured in RapidAPI and matched in `/opt/rendernest/.env.production`.
 - [ ] `scripts/verify-rapidapi.ts` passes 10/10 checks.
 - [ ] OpenAPI spec imported with schemas and descriptions.

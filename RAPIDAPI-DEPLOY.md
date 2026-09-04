@@ -80,7 +80,7 @@ All core RenderNest routes are available through RapidAPI:
 
 ### Step 2: Configure Base URL & Target
 1. Go to **Target URL**:
-   - URL: `https://api.rendernest.com` (or your configured production domain).
+   - URL: `https://api-rendernest.duckdns.org` (or your configured production domain).
 2. Verify **Timeout**: Set to `60` seconds (to accommodate browser-heavy rendering).
 
 ### Step 3: Configure Proxy Secret
@@ -95,7 +95,7 @@ All core RenderNest routes are available through RapidAPI:
 ### Step 4: Import OpenAPI Specification
 RenderNest generates an OpenAPI 3.1 specification at `/api/openapi.json` (or `packages/shared/src/openapi/spec.json`):
 1. In RapidAPI Studio, click **Definitions** → **Import from URL** (or File).
-2. Provide `https://api.rendernest.com/api/openapi.json`.
+2. Provide `https://api-rendernest.duckdns.org/api/openapi.json`.
 3. Verify all endpoints, request schemas, and responses are populated with documentation.
 
 ---
@@ -117,7 +117,7 @@ To verify your RapidAPI gateway configuration before publishing:
 
 ```bash
 # Run the automated RapidAPI compatibility suite
-RAPIDAPI_PROXY_SECRET=your_secret API_URL=https://api.rendernest.com node --import tsx scripts/verify-rapidapi.ts
+RAPIDAPI_PROXY_SECRET=your_secret API_URL=https://api-rendernest.duckdns.org node --import tsx scripts/verify-rapidapi.ts
 ```
 
 When all 10 checks return `PASS`, your API is certified ready for public listing.

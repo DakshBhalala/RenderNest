@@ -13,8 +13,8 @@ This checklist tracks all infrastructure credentials, API keys, and cryptographi
 | Key | Description | Status | Secret / Location Reference |
 |---|---|---|---|
 | `ORACLE_SSH_KEY` | Private SSH key for Ubuntu VM (`ssh -i key.pem ubuntu@<IP>`) | [ ] Pending | Stored locally |
-| `ORACLE_VM_IP` | Public IPv4 address assigned to Oracle compute instance | [ ] Pending | In Oracle Console |
-| `DOMAIN_NAME` | Primary domain name (e.g., `rendernest.com`) | [ ] Pending | In Registrar / Cloudflare |
+| `ORACLE_VM_IP` | 130.210.47.93 | [x] Active | In Oracle Console |
+| `DOMAIN_NAME` | Primary domain name (e.g., `rendernest.duckdns.org`) | [ ] Pending | In Registrar / Cloudflare |
 
 ---
 

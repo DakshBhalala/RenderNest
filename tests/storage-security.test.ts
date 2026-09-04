@@ -8,7 +8,7 @@ describe('Storage Security - HMAC Signed URLs & Traversal Defense', () => {
   const secretKey = 'test-secret-key-32-chars-long!!';
   const storage = new LocalStorageProvider({
     baseDir: testDir,
-    appUrl: 'https://api.rendernest.com',
+    appUrl: 'https://api-rendernest.duckdns.org',
     secretKey,
   });
 
@@ -16,7 +16,7 @@ describe('Storage Security - HMAC Signed URLs & Traversal Defense', () => {
     const key = 'artifacts/screenshot_123.png';
     const signedUrl = await storage.createSignedUrl(key, 3600);
 
-    expect(signedUrl).toContain('https://api.rendernest.com/api/storage/');
+    expect(signedUrl).toContain('https://api-rendernest.duckdns.org/api/storage/');
     expect(signedUrl).toContain('expires=');
     expect(signedUrl).toContain('signature=');
 

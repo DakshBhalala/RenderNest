@@ -71,7 +71,7 @@ export default function RenderPdfDocs() {
         <h2 className="text-base font-bold text-white">Code Example</h2>
         <CodeBlock
           language="bash"
-          code={`curl -X POST https://api.rendernest.com/v1/render/pdf \\
+          code={`curl -X POST https://api-rendernest.duckdns.org/v1/render/pdf \\
   -H "Authorization: Bearer wf_live_xxxx" \\
   -H "Content-Type: application/json" \\
   -d '{
@@ -92,7 +92,7 @@ export default function RenderPdfDocs() {
   "request_id": "req_1725432130_7b6a1c",
   "data": {
     "url": "https://example.com",
-    "file_url": "https://api.rendernest.com/api/storage/pdfs/ws_demo/req_1725432130_7b6a1c.pdf?expires=...",
+    "file_url": "https://api-rendernest.duckdns.org/api/storage/pdfs/ws_demo/req_1725432130_7b6a1c.pdf?expires=...",
     "format": "A4",
     "file_size_bytes": 48209
   }

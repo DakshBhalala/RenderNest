@@ -55,8 +55,8 @@ Use this release gate before every staging and production deployment of RenderNe
 
 ## 6. Post-Deployment Verification Gates
 
-- [ ] **Liveness Probe**: `curl -f https://api.rendernest.com/health` returns `200 OK` (`{"status":"ok","process":"alive"}`).
-- [ ] **Readiness Probe**: `curl -f https://api.rendernest.com/ready` returns `200 OK` (`{"ready":true,"database":true,"redis":true}`).
+- [ ] **Liveness Probe**: `curl -f https://api-rendernest.duckdns.org/health` returns `200 OK` (`{"status":"ok","process":"alive"}`).
+- [ ] **Readiness Probe**: `curl -f https://api-rendernest.duckdns.org/ready` returns `200 OK` (`{"ready":true,"database":true,"redis":true}`).
 - [ ] **Production Smoke Test**: Run `API_KEY=wf_live_xxx node --import tsx scripts/production-smoke-test.ts`. All endpoint checks pass.
 - [ ] **RapidAPI Gateway Test**: Run `node --import tsx scripts/verify-rapidapi.ts`. All 10 checks return `PASS`.
 - [ ] **SSRF Guard**: Verify attempt to access `http://169.254.169.254` returns HTTP `400` / `422` with safety block.
