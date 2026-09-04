@@ -5,7 +5,8 @@
 FROM node:22-bookworm-slim AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+ENV CI=true
+RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
 
 # Install Chromium system dependencies for Playwright
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -42,8 +43,9 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/providers/package.json ./packages/providers/
 COPY packages/api-client/package.json ./packages/api-client/
 COPY apps/web/package.json ./apps/web/
+COPY apps/worker/package.json ./apps/worker/
 
-RUN pnpm install --frozen-lockfile || pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Build Stage
 FROM dependencies AS builder
@@ -65,10 +67,8 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 WORKDIR /app
 
-# Install Playwright browser
-RUN npx playwright install chromium
-
 COPY --from=builder --chown=node:node /app ./
+RUN pnpm --filter @rendernest/providers exec playwright install chromium
 RUN mkdir -p /ms-playwright && chown -R node:node /ms-playwright
 
 USER node
