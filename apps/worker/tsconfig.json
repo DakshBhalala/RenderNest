@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "declaration": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@rendernest/shared": ["../../packages/shared/src/index.ts"],
+      "@rendernest/shared/*": ["../../packages/shared/src/*"],
+      "@rendernest/database": ["../../packages/database/src/index.ts"],
+      "@rendernest/database/*": ["../../packages/database/src/*"],
+      "@rendernest/providers": ["../../packages/providers/src/index.ts"],
+      "@rendernest/providers/*": ["../../packages/providers/src/*"]
+    }
+  },
+  "include": ["src/**/*"]
+}

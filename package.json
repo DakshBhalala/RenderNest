@@ -1,0 +1,33 @@
+{
+  "name": "rendernest-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One API for rendering, extracting, converting, and understanding the web.",
+  "scripts": {
+    "dev": "pnpm --filter @rendernest/web dev",
+    "build": "pnpm --filter @rendernest/shared build && pnpm --filter @rendernest/database build && pnpm --filter @rendernest/providers build && pnpm --filter @rendernest/api-client build && pnpm --filter @rendernest/worker build && pnpm --filter @rendernest/web build",
+    "start": "pnpm --filter @rendernest/web start",
+    "worker": "pnpm --filter @rendernest/worker dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "db:generate": "pnpm --filter @rendernest/database generate",
+    "db:generate:prod": "pnpm --filter @rendernest/database generate:prod",
+    "db:push": "pnpm --filter @rendernest/database push",
+    "db:push:prod": "pnpm --filter @rendernest/database push:prod",
+    "db:seed": "pnpm --filter @rendernest/database seed",
+    "deploy:check": "node --import tsx scripts/deploy-check.ts",
+    "verify:production": "node --import tsx scripts/production-smoke-test.ts",
+    "verify:rapidapi": "node --import tsx scripts/verify-rapidapi.ts",
+    "launch:check": "node --expose-gc --import tsx scripts/launch-check.ts",
+    "launch:attack": "node --import tsx scripts/launch-attack.ts",
+    "launch:load": "node --import tsx scripts/launch-load.ts",
+    "launch:soak": "node --expose-gc --import tsx scripts/launch-soak.ts",
+    "launch:web-corpus": "node --import tsx scripts/launch-web-corpus.ts",
+    "launch:recovery": "node --import tsx scripts/launch-recovery.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "tsx": "^4.19.3",
+    "vitest": "^2.1.8"
+  }
+}

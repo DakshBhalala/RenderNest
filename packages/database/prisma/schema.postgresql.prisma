@@ -1,0 +1,262 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String       @id @default(cuid())
+  email        String       @unique
+  passwordHash String
+  name         String?
+  avatarUrl    String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  sessions     Session[]
+  memberships  Membership[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Workspace {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  planTier      String   @default("free")
+  creditBalance Int      @default(500)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  memberships        Membership[]
+  projects           Project[]
+  apiKeys            ApiKey[]
+  requestLogs        RequestLog[]
+  jobs               Job[]
+  webhooks           Webhook[]
+  usageRecords       UsageRecord[]
+  creditTransactions CreditTransaction[]
+  storedFiles        StoredFile[]
+  subscription       Subscription?
+}
+
+model Membership {
+  id          String    @id @default(cuid())
+  userId      String
+  workspaceId String
+  role        String    @default("OWNER")
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model ApiKey {
+  id          String       @id @default(cuid())
+  workspaceId String
+  name        String
+  keyPrefix   String
+  keyHash     String       @unique
+  environment String       @default("live")
+  status      String       @default("active")
+  lastUsedAt  DateTime?
+  createdAt   DateTime     @default(now())
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  requestLogs RequestLog[]
+
+  @@index([workspaceId])
+  @@index([keyHash])
+}
+
+model RequestLog {
+  id                   String     @id @default(cuid())
+  workspaceId          String
+  apiKeyId             String?
+  endpoint             String
+  operation            String
+  method               String     @default("POST")
+  statusCode           Int
+  latencyMs            Int
+  credits              Int        @default(1)
+  ipAddress            String?
+  userAgent            String?
+  requestBodySanitized String?
+  errorMessage         String?
+  createdAt            DateTime   @default(now())
+
+  workspace            Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  apiKey               ApiKey?    @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([createdAt])
+  @@index([operation])
+  @@index([statusCode])
+}
+
+model Job {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  operation    String
+  input        String
+  status       String    @default("queued")
+  retryCount   Int       @default(0)
+  output       String?
+  errorMessage String?
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Webhook {
+  id           String            @id @default(cuid())
+  workspaceId  String
+  url          String
+  secretHash   String
+  secretPrefix String
+  events       String            @default("job.completed,job.failed")
+  active       Boolean           @default(true)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  workspace    Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  deliveries   WebhookDelivery[]
+
+  @@index([workspaceId])
+}
+
+model WebhookDelivery {
+  id           String    @id @default(cuid())
+  webhookId    String
+  event        String
+  payload      String
+  statusCode   Int?
+  responseBody String?
+  durationMs   Int?
+  success      Boolean   @default(false)
+  attempts     Int       @default(1)
+  createdAt    DateTime  @default(now())
+
+  webhook      Webhook   @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+
+  @@index([webhookId])
+  @@index([createdAt])
+}
+
+model UsageRecord {
+  id              String    @id @default(cuid())
+  workspaceId     String
+  operation       String
+  credits         Int
+  periodYearMonth String
+  createdAt       DateTime  @default(now())
+
+  workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, periodYearMonth])
+}
+
+model CreditTransaction {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  amount       Int
+  type         String
+  description  String
+  balanceAfter Int
+  createdAt    DateTime  @default(now())
+
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model Plan {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  name           String
+  monthlyCredits Int
+  rateLimitRpm   Int
+  maxConcurrency Int
+  priceMonthly   Int
+  createdAt      DateTime @default(now())
+}
+
+model Subscription {
+  id                   String    @id @default(cuid())
+  workspaceId          String    @unique
+  planCode             String    @default("free")
+  status               String    @default("active")
+  currentPeriodStart   DateTime  @default(now())
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean   @default(false)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  workspace            Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Operation {
+  id          String   @id @default(cuid())
+  name        String
+  operation   String   @unique
+  credits     Int
+  timeoutMs   Int
+  queue       String
+  enabled     Boolean  @default(true)
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model StoredFile {
+  id              String    @id @default(cuid())
+  workspaceId     String
+  fileKey         String    @unique
+  originalName    String
+  mimeType        String
+  sizeBytes       Int
+  storageProvider String    @default("local")
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([expiresAt])
+}

@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  # -------------------------------------------------------------
+  # Caddy Reverse Proxy & Edge TLS Termination
+  # -------------------------------------------------------------
+  caddy:
+    image: caddy:2.8-alpine
+    container_name: rendernest-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+    networks:
+      - rendernest_prod_net
+
+  # -------------------------------------------------------------
+  # PostgreSQL 16 Relational Database
+  # -------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: rendernest-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rendernest}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env.production}
+      POSTGRES_DB: ${POSTGRES_DB:-rendernest_production}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rendernest} -d ${POSTGRES_DB:-rendernest_production}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rendernest_prod_net
+
+  # -------------------------------------------------------------
+  # Redis 7 In-Memory Queue Store
+  # -------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: rendernest-redis
+    restart: unless-stopped
+    command: >
+      sh -c '
+        if [ -n "$$REDIS_PASSWORD" ]; then
+          redis-server --requirepass "$$REDIS_PASSWORD" --appendonly yes
+        else
+          redis-server --appendonly yes
+        fi
+      '
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: >
+        sh -c '
+          if [ -n "$$REDIS_PASSWORD" ]; then
+            redis-cli -a "$$REDIS_PASSWORD" ping | grep -q PONG
+          else
+            redis-cli ping | grep -q PONG
+          fi
+        '
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rendernest_prod_net
+
+  # -------------------------------------------------------------
+  # RenderNest API & Web Application
+  # -------------------------------------------------------------
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rendernest-web
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DEMO_MODE=false
+      - APP_URL=${APP_URL:-https://rendernest.com}
+      - API_URL=${API_URL:-https://api.rendernest.com}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-rendernest}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-rendernest_production}?schema=public
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - AUTH_SECRET=${AUTH_SECRET:?AUTH_SECRET must be set}
+      - STORAGE_SECRET=${STORAGE_SECRET:-${AUTH_SECRET}}
+      - STORAGE_PROVIDER=${STORAGE_PROVIDER:-r2}
+      - R2_ACCOUNT_ID=${R2_ACCOUNT_ID:-}
+      - R2_ACCESS_KEY=${R2_ACCESS_KEY:-}
+      - R2_SECRET_KEY=${R2_SECRET_KEY:-}
+      - R2_BUCKET=${R2_BUCKET:-rendernest-production-artifacts}
+      - S3_BUCKET=${R2_BUCKET:-rendernest-production-artifacts}
+      - RAPIDAPI_PROXY_SECRET=${RAPIDAPI_PROXY_SECRET:-}
+      - EXTRACTION_PROVIDER=${EXTRACTION_PROVIDER:-local}
+    volumes:
+      - storage_data:/app/.storage
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:3000/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))\""]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - rendernest_prod_net
+
+  # -------------------------------------------------------------
+  # RenderNest BullMQ Browser Worker
+  # -------------------------------------------------------------
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: rendernest-worker
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DEMO_MODE=false
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-rendernest}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-rendernest_production}?schema=public
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - AUTH_SECRET=${AUTH_SECRET:?AUTH_SECRET must be set}
+      - STORAGE_SECRET=${STORAGE_SECRET:-${AUTH_SECRET}}
+      - STORAGE_PROVIDER=${STORAGE_PROVIDER:-r2}
+      - R2_ACCOUNT_ID=${R2_ACCOUNT_ID:-}
+      - R2_ACCESS_KEY=${R2_ACCESS_KEY:-}
+      - R2_SECRET_KEY=${R2_SECRET_KEY:-}
+      - R2_BUCKET=${R2_BUCKET:-rendernest-production-artifacts}
+      - S3_BUCKET=${R2_BUCKET:-rendernest-production-artifacts}
+      - EXTRACTION_PROVIDER=${EXTRACTION_PROVIDER:-local}
+    volumes:
+      - storage_data:/app/.storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - rendernest_prod_net
+
+networks:
+  rendernest_prod_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  caddy_data:
+  caddy_config:
+  storage_data:

@@ -1,0 +1,79 @@
+# ==========================================
+# RenderNest Production Caddy Reverse Proxy
+# ==========================================
+
+{
+    # Global options
+    email {$ACME_EMAIL:admin@rendernest.com}
+    admin off
+}
+
+# -------------------------------------------------------------
+# API Domain: api.rendernest.com
+# -------------------------------------------------------------
+{$API_DOMAIN:api.rendernest.com} {
+    # Request body limit (10MB)
+    request_body {
+        max_size 10MB
+    }
+
+    # Security Headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    # Reverse proxy to Next.js API server
+    reverse_proxy web:3000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+
+        # Health check to backend
+        health_uri /health
+        health_interval 15s
+        health_timeout 5s
+    }
+
+    # Structured logging
+    log {
+        output stdout
+        format json
+    }
+}
+
+# -------------------------------------------------------------
+# Web Domain: rendernest.com
+# -------------------------------------------------------------
+{$APP_DOMAIN:rendernest.com} {
+    # Request body limit
+    request_body {
+        max_size 10MB
+    }
+
+    # Security Headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+
+    # Reverse proxy to Next.js Web server
+    reverse_proxy web:3000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+
+    log {
+        output stdout
+        format json
+    }
+}
