@@ -11,7 +11,8 @@
     "push:prod": "prisma db push --schema=prisma/schema.postgresql.prisma",
     "seed": "tsx prisma/seed.ts",
     "studio": "prisma studio",
-    "build": "node -e \"try { require('child_process').execSync('prisma generate', {stdio: 'inherit'}); } catch (e) { console.log('Prisma client already generated and up to date'); }\""
+    "build": "node -e \"try { require('child_process').execSync('prisma generate', {stdio: 'inherit'}); } catch (e) { console.log('Prisma client already generated and up to date'); }\"",
+    "migrate:deploy": "prisma migrate deploy --schema=prisma/schema.postgresql.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

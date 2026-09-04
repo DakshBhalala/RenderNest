@@ -23,7 +23,8 @@
     "launch:load": "node --import tsx scripts/launch-load.ts",
     "launch:soak": "node --expose-gc --import tsx scripts/launch-soak.ts",
     "launch:web-corpus": "node --import tsx scripts/launch-web-corpus.ts",
-    "launch:recovery": "node --import tsx scripts/launch-recovery.ts"
+    "launch:recovery": "node --import tsx scripts/launch-recovery.ts",
+    "db:migrate:prod": "pnpm --filter @rendernest/database migrate:deploy"
   },
   "devDependencies": {
     "typescript": "^5.7.3",
